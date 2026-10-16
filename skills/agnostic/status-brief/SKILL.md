@@ -15,16 +15,16 @@ It is distinct from a morning brief, which covers agenda, mail and messages. If 
 
 - On demand: "où en est-on ?", "fais-moi le point", "status of my projects".
 - As a scheduled digest (see "Scheduled mode").
-- Standalone by design: it does not need `topic-split` or `topic-dispatch` to have run. It only reads what they leave behind (backlog items, in `backlog.md` and in the memory service).
+- Standalone by design: it does not need `topic-split` or `topic-dispatch` to have run. It only reads what they leave behind (backlog items, in `backlog.md` and in Mem0).
 
 ## Step 1 — Gather (all sources are optional; use what exists)
 
-Default is to combine all of them (notes, memory service, chats, git), because notes say what was intended and git says what actually happened. If they disagree, report the disagreement; that is often the most useful line of the brief.
+Default is to combine all of them (notes, Mem0, chats, git), because notes say what was intended and git says what actually happened. If they disagree, report the disagreement; that is often the most useful line of the brief.
 
 1. **Project notes**: the agent's own memory or notes (files per project/area, if the agent has such a store). These hold decisions, constraints, deadlines and status as the user stated them. Use the file's own wording; do not upgrade a plan into a fact.
-2. **Shared memory service** (e.g. Mem0), if one is connected: page through its entries and run targeted searches ("next step", "blocked", "decision", the workstream names found in step 1). Entries typically carry a project identifier, a type (context, decision, backlog) and dates. Group by project = workstream, use the last-update date for freshness, and treat `backlog` entries as parked items to list separately. Such a store often holds context written from other tools (coding agents, other chats), so it may know the real last step where the notes do not. When an entry and a project note refer to the same project (use aliases), merge them into one.
+2. **Mem0**, if its tools are available: page through its entries and run targeted searches ("next step", "blocked", "decision", the workstream names found in step 1). Entries typically carry a project identifier, a type (context, decision, backlog) and dates. Group by project = workstream, use the last-update date for freshness, and treat `backlog` entries as parked items to list separately. Mem0 often holds context written from other tools (coding agents, other chats), so it may know the real last step where the notes do not. When an entry and a project note refer to the same project (use aliases), merge them into one.
 3. **Recent chats**: if a chat-history tool exists (listing or searching past conversations), pull the last ~7–14 days, group chats by workstream, and note for each: last topic, whether it ended on an open question, and the date. If no such tool is available in this session, say so in one line and continue; do not invent chats.
-4. **Backlog file**: if a `backlog.md` is reachable (see `topic-dispatch` for its location), read its "Open" section and list those items in a separate "Backlog" block with their age. It is the readable source of truth; `backlog` entries in the memory service are its mirror, so do not list the same item twice, and flag any item present in only one of the two.
+4. **Backlog file**: if a `backlog.md` is reachable (see `topic-dispatch` for its location), read its "Open" section and list those items in a separate "Backlog" block with their age. It is the readable source of truth; Mem0 `backlog` entries are its mirror, so do not list the same item twice, and flag any item present in only one of the two.
 5. **Git repositories**: if a shell with access to the user's repos exists, for each repo of a workstream read `git status --short`, `git log -5 --format='%ad %s' --date=short`, open branches and (if `gh` works) open PRs/issues. If repos are not reachable (typical in a cloud run), say "repos not checked" instead of guessing.
 
 Read-only throughout. Never commit, push, edit memory or modify a repo from this skill.
@@ -37,7 +37,7 @@ One entry per workstream, not per chat. Merge chats and repos that belong to the
 - **Next step**: the single most concrete next action, or "unknown" if no source says.
 - **Blocked by**: a decision the user owes, a missing access, another workstream. Omit if none.
 - **Freshness**: days since last activity from the best source; flag as *stale* beyond ~7 days with an open next step.
-- **Sources**: which of notes / memory service / chats / git back this entry, so the user can judge confidence.
+- **Sources**: which of notes / Mem0 / chats / git back this entry, so the user can judge confidence.
 
 Only include a fact if a source states it. Mark inferences as such.
 
