@@ -3,7 +3,7 @@ name: topic-split
 description: "Detects when a conversation has drifted into several independent topics and, if so, splits it: lists the topics and writes a self-contained handoff text for each one. Use when a chat mixes unrelated subjects, when the user says 'on part dans tous les sens', 'sépare ça en sujets', 'split this conversation', 'je mélange plusieurs choses', or when a new subject appears that has nothing to do with the current goal. It only separates topics and writes handoffs; deciding what happens to each topic (new chat, scheduled task, backlog) is the job of topic-dispatch."
 ---
 
-# topic-split (v0 draft, rewritten from the project notes)
+# topic-split
 
 ## Purpose
 
@@ -79,4 +79,3 @@ End with one line pointing to `topic-dispatch` for deciding what to do with each
 ## Open points
 
 - The original topic-split text was lost; this is a rewrite from the project notes (splits independent topics, one handoff per topic, copy-paste, no automatic conversation creation). Compare it with any older copy before adopting it.
-- Tool-agnostic wording assumed (suggested location `skills/agnostic/` in `chat-agent-setup`).

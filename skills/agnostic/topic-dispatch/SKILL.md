@@ -3,7 +3,7 @@ name: "topic-dispatch"
 description: "Decides what to do with each topic once a conversation has been split into topics: prioritize them, then for each one either prepare a self-contained starter message for a dedicated new conversation (now) or schedule a task for later, and output a clear processing order with 'now' vs 'deferred'. Use right after topic-split, or whenever the user has several parallel topics/chats and says 'dans quel ordre je traite ça', 'what do I do first', 'trie ces sujets', 'ouvre une conversation pour chacun', 'programme ça pour plus tard', or feels overloaded by too many open threads."
 ---
 
-# topic-dispatch (v0 draft)
+# topic-dispatch
 
 ## Purpose
 
@@ -30,11 +30,11 @@ For each topic choose exactly one route:
 
 **A. Dedicated conversation now.** Use for topics ranked in the "now" set. Produce a *starter message* that works with no memory of the original chat: goal, relevant decisions already made (quoted from the source), constraints, files/repos involved, what "done" looks like, and the first concrete step. Rule of thumb: someone who has never seen the original conversation could act on it. Keep decisions the user stated separate from assumptions.
 
-Default delivery is **copy-paste text**, because the user decided (see `chat-agent-skills` notes) not to auto-create conversations for now. Only create a conversation automatically if a tool for it exists in the session and the user has asked for that.
+Default delivery is **copy-paste text**, because the user decided not to auto-create conversations for now. Only create a conversation automatically if a tool for it exists in the session and the user has asked for that.
 
-**B. Scheduled task for later.** Use for topics that are not urgent, depend on a future date or event, or exceed the "now" budget. Prepare: a short name, a time (date or recurrence), and a standalone prompt (each firing starts a fresh session with no memory of this chat, so the prompt must carry its own context, like a starter message). Create it with the scheduled-task tools only when the user asked for creation or confirms; when the run is unattended and the user pre-authorized scheduling, create it and report. Never use local cron tools, they die with the session. For a one-off check-in in this same conversation, use the send-later tool instead.
+**B. Scheduled task for later.** Use for topics that are not urgent, depend on a future date or event, or exceed the "now" budget. Prepare: a short name, a time (date or recurrence), and a standalone prompt (each firing starts a fresh session with no memory of this chat, so the prompt must carry its own context, like a starter message). Create it with the agent's scheduled-task feature only when the user asked for creation or confirms; when the run is unattended and the user pre-authorized scheduling, create it and report. Never use a session-local timer, it dies with the session. For a one-off reminder in this same conversation, use a delayed message if the agent has one. If the agent has no scheduling feature, hand back the name, time and prompt for the user to set up.
 
-**C. Backlog.** For topics worth keeping but with no date and no urgency: record them so they are not lost and can be picked up later. Each backlog item holds: name, goal, the handoff text (self-contained, as for route A), and the one condition that would revive it. Store each item in **two places**, because they serve different purposes: a Markdown file the user can read, edit and version (`backlog.md`, the readable source of truth), and a Mem0 entry (`metadata.type = "backlog"`, `app_id` = the related project, or `backlog` if none) so that any chat and `status-brief` can find it without file access. Write the `.md` first, then the Mem0 mirror; if only one is reachable, write that one and say which is missing. If the two disagree later, the `.md` wins. Write only after the user's go-ahead (or when the invocation authorizes it); otherwise present the items in the output for the user to store. The backlog is a list of things to decide on later, not a schedule.
+**C. Backlog.** For topics worth keeping but with no date and no urgency: record them so they are not lost and can be picked up later. Each backlog item holds: name, goal, the handoff text (self-contained, as for route A), and the one condition that would revive it. Store each item in **two places**, because they serve different purposes: a Markdown file the user can read, edit and version (`backlog.md`, the readable source of truth), and, if a shared memory service (e.g. Mem0) is connected, a mirror entry (type `backlog`, project = the related project, or `backlog` if none) so that any chat and `status-brief` can find it without file access. Write the `.md` first, then the mirror; if only one is reachable, write that one and say which is missing. If the two disagree later, the `.md` wins. Write only after the user's go-ahead (or when the invocation authorizes it); otherwise present the items in the output for the user to store. The backlog is a list of things to decide on later, not a schedule.
 
 `backlog.md` format (append new items, never rewrite existing ones; to close an item, move it to the "Done / dropped" section with a date):
 
@@ -54,7 +54,7 @@ Default delivery is **copy-paste text**, because the user decided (see `chat-age
 - YYYY-MM-DD — <short name> — <done | dropped> — <one-line reason>
 ````
 
-Location: the path given by the user; otherwise `backlog.md` at the root of the repo that holds these skills (hypothesis: `chat-agent-skills`), or, if the user's folders are not reachable, hand the new entries back in the output to paste in.
+Location: the path given by the user; otherwise `backlog.md` at the root of the repo that holds these skills (hypothesis: `chat-agent-setup`), or, if the user's folders are not reachable, hand the new entries back in the output to paste in.
 
 If a topic is too vague to route, route it to "needs a decision from you" with the precise question, rather than guessing.
 
@@ -64,7 +64,7 @@ Always end with this structure:
 
 1. **Processing order**: numbered list of all topics.
 2. **Now**: topics to start, each with its starter message (code block, ready to paste).
-3. **Later**: scheduled tasks (name, when, what it will do) and backlog items (with revival condition, and where they were written: `backlog.md`, Mem0, or both).
+3. **Later**: scheduled tasks (name, when, what it will do) and backlog items (with revival condition, and where they were written: `backlog.md`, the memory service, or both).
 4. **Needs your decision**: at most a few precise questions.
 5. **Assumptions**: anything inferred.
 
@@ -79,5 +79,5 @@ Do not create anything silently: whatever was created (tasks) is listed with its
 ## Open points
 
 - Default size of the "now" set (3).
-- Exact location of `backlog.md` (default: root of `chat-agent-skills`; it mixes user data into a skills repo, so a separate notes folder may fit better).
+- Exact location of `backlog.md` (default: root of `chat-agent-setup`; it mixes user data into a skills repo, so a separate notes folder may fit better).
 - Whether automatic opening of conversations should become the default once available.
