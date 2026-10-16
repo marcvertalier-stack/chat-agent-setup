@@ -7,10 +7,14 @@ Tout ce qui compose mon agent de chat : skills, configuration et réglages. Ce d
 - `skills/` : une skill par dossier (format Agent Skills : un `SKILL.md` avec `name` et `description`)
   - `agnostic/` : skills utilisables par n'importe quel agent, sans outil propre à Claude
     - `tools-to-test/` : enregistre un outil à tester dans un fichier de suivi (Excel, sinon CSV) trié par problème
+    - `topic-split/` : découpe une conversation en sujets indépendants, avec un texte de passation par sujet
+    - `feature-split/` : décide si un projet doit être découpé en features et produit la liste
+    - `interview-me/` : interview une question à la fois pour trouver ce que l'utilisateur veut vraiment
     - `model-picker/` : classe une tâche sur des paliers T1 à T4 et la traduit en modèle via un profil de routage
   - `claude/` : skills qui s'appuient sur des fonctions de Claude (lien avec l'ordinateur, connecteurs, outils de l'application)
+    - `topic-dispatch/` : priorise les sujets issus de topic-split, puis conversation dédiée, tâche programmée ou backlog (outils de tâches programmées, Mem0)
+    - `status-brief/` : brief « où en est-on » sur les chantiers en cours (mémoire, Mem0, dépôts)
     - `cl-pro-models-routing/` : profil de routage de `model-picker` pour le chat avec abonnement Pro (modèles par palier, consignes, effort)
-  - `topic-split/` : à ajouter (découpe d'une conversation en sujets, avec texte de passation) ; dossier à choisir selon le contenu
 - `config/` : configuration de l'agent (mémoire Mem0, réglages)
 
 ## À trier
