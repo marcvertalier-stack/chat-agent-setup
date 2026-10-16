@@ -6,8 +6,8 @@ Tout ce qui compose mon agent de chat : skills, configuration et réglages. Ce d
 
 - `skills/` : une skill par dossier (format Agent Skills : un `SKILL.md` avec `name` et `description`)
   - `agnostic/` : skills utilisables par n'importe quel agent, sans outil propre à Claude
+    - `tools-to-test/` : enregistre un outil à tester dans un fichier de suivi (Excel, sinon CSV) trié par problème
   - `claude/` : skills qui s'appuient sur des fonctions de Claude (lien avec l'ordinateur, connecteurs, outils de l'application)
-    - `tools-to-test/` : enregistre un outil à tester dans un Excel tenu à jour sur mon ordinateur
   - `topic-split/` : à ajouter (découpe d'une conversation en sujets, avec texte de passation) ; dossier à choisir selon le contenu
 - `config/` : configuration de l'agent (mémoire Mem0, réglages)
 
