@@ -1,6 +1,7 @@
 ---
 name: tools-to-test
 description: Enregistre un outil à tester (problème à résoudre, source optionnelle) dans un Excel tenu à jour sur l'ordinateur de l'utilisateur, trié par problème. Déclenchable en une phrase.
+compatibility: Conçue pour Claude avec l'application de bureau (accès aux dossiers de l'ordinateur) ; nécessite openpyxl.
 ---
 
 # Outils à tester (Excel sur l'ordinateur de l'utilisateur)
