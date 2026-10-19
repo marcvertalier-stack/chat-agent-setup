@@ -13,6 +13,7 @@ Tout ce qui compose mon agent de chat : skills, règles, configuration et régla
     - `topic-dispatch/` : priorise les sujets issus de topic-split, puis conversation dédiée, tâche programmée ou backlog
     - `status-brief/` : brief « où en est-on » sur les chantiers en cours
     - `model-picker/` : classe une tâche sur des paliers T1 à T4 et la traduit en modèle via un profil de routage
+    - `message-review/` : relecture d'un message avant envoi, distinguant objectif et efficacité, corrections linguistiques et tournures à retenir
   - `claude/` : skills qui s'appuient sur des fonctions de Claude (lien avec l'ordinateur, connecteurs, outils de l'application)
     - `cl-pro-models-routing/` : profil de routage de `model-picker` pour le chat avec abonnement Pro (modèles par palier, consignes, effort)
 - `rules/` : une règle par dossier (un `RULE.md` avec `name` et `description`, même organisation que `skills/`). Une règle est une consigne permanente, toujours active, contrairement à une skill qui se charge à la demande.
